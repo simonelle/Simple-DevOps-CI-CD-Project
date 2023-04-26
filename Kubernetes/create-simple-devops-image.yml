@@ -1,0 +1,16 @@
+---
+- hosts: ansible-server
+  become: true
+
+  tasks:
+  - name: create docker image using war file
+    shell: docker build -t mylandmarktech/springapp .
+    args:
+      chdir: /home/ansible/build
+
+  - name: push image on to dockerhub
+    shell: docker push mylandmarktech/springapp
+
+  - name: remove docker images form ansible server
+    shell: docker rmi mylandmarktech/springapp:latest 
+    ignore_errors: yes
